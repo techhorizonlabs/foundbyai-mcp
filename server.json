@@ -1,6 +1,6 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
-  "name": "com.areyoufoundbyai/monitor",
+  "name": "io.github.huxleypeckham/found-by-ai-monitor",
   "description": "Live AI-visibility measurements across 7 answer engines, queryable by the business owner's own AI.",
   "status": "active",
   "websiteUrl": "https://areyoufoundbyai.com/guides/connect-your-ai",
