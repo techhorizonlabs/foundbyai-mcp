@@ -45,8 +45,8 @@ Nineteen read tools over live measurements, plus one action on paid monitors:
 ## Customers
 
 Every monitored site gets its own endpoint at `https://areyoufoundbyai.com/mcp/<token>`,
-and agency fleets get one connector for the whole network. Setup guide, including Claude and
-Cursor one-click paths: [areyoufoundbyai.com/guides/connect-your-ai](https://areyoufoundbyai.com/guides/connect-your-ai)
+and agency fleets get one connector for the whole network. Setup guide, with a one-click Cursor
+link and the Claude Code command: [areyoufoundbyai.com/guides/connect-your-ai](https://areyoufoundbyai.com/guides/connect-your-ai)
 
 The measurement method is open source: [techhorizonlabs/thl-open](https://github.com/techhorizonlabs/thl-open).
 
