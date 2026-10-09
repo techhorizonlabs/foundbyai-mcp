@@ -27,8 +27,11 @@ would you fix first?"
 
 ## What your AI gets
 
-Twenty tools: nineteen read tools over live measurements, plus one action. They are scoped to the
-monitor behind the token, so none of them takes a URL:
+The public demo lists twenty tools: nineteen read tools over live measurements, plus one action.
+They are scoped to the monitor behind the token, so none of them takes a URL. The evidence tools
+(crawler access, AI traffic, agent view, benchmark, share of voice, cited queries, source profile,
+citation sources, schema evidence, regional visibility) read saved measurements only, so calling
+them never starts a new scan or uses the scan allowance:
 
 - `get_visibility`: AI Visibility and AI Readiness scores (each out of 100) with the previous week, the separate off-site Footprint score, and the subscores
 - `get_answers`: the answer each engine gave to each tracked buyer question, with the competitors it named and the web searches it ran first
@@ -49,6 +52,12 @@ monitor behind the token, so none of them takes a URL:
 - `get_personas`: the buyer personas behind the tracked questions
 - `get_context`: the full weekly pack in one call
 - `request_rescan`: the one action, a fresh measurement capped by the plan's on-demand allowance (5 per rolling 7 days). On the demo it returns a worked example and queues nothing
+
+A customer's own token lists twenty-three tools: the twenty above plus three more saved-only reads.
+
+- `get_balance`: the site's existing on-demand scan allowance, queued status and cooldown
+- `get_weekly_brief`: the saved weekly brief
+- `get_grants`: the saved grants source check
 
 ## Customers
 
@@ -77,6 +86,6 @@ itself is not.
 [`server.json`](./server.json) is the manifest for the official MCP registry. Its `version` is the
 version of this registry entry, not of the server software: the registry needs a new version
 number each time the entry's metadata changes, so the entry is at 1.1.1 while the hosted server
-reports 1.1.0 in its `serverInfo`. Both describe the same twenty tools.
+reports 1.1.0 in its `serverInfo`. Both point at the same hosted server.
 
 Tech Horizon Labs, Noosa, Australia. hello@techhorizonlabs.com
