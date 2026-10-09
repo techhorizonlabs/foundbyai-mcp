@@ -3,12 +3,19 @@
 Hosted MCP server for [Are you found by AI?](https://areyoufoundbyai.com), the AI visibility
 tool built by Tech Horizon Labs. The product asks AI engines the questions a business's buyers
 actually type, records whether the business is named, who is named instead and which sources the
-engines read, and re-measures every week. This server gives the business owner's own AI live
+engines read, and re-measures on a schedule (weekly on Pro, monthly on the free plan). This server gives the business owner's own AI live
 access to that measurement mid-conversation.
 
 ## Try it now, no account
 
-Add this URL to Claude, Cursor, or any MCP client as a remote server (Streamable HTTP):
+In Claude Code, one line:
+
+```bash
+claude mcp add --transport http found-by-ai https://areyoufoundbyai.com/mcp/demo
+```
+
+Or add this URL to the Claude app (Settings, Connectors, Add custom connector), Cursor, or any
+other MCP client as a remote server (Streamable HTTP). No key and no signup:
 
 ```
 https://areyoufoundbyai.com/mcp/demo
@@ -20,14 +27,18 @@ would you fix first?"
 
 ## What your AI gets
 
-Nineteen read tools over live measurements, plus one action on paid monitors:
+The public demo lists twenty tools: nineteen read tools over live measurements, plus one action.
+They are scoped to the monitor behind the token, so none of them takes a URL. The evidence tools
+(crawler access, AI traffic, agent view, benchmark, share of voice, cited queries, source profile,
+citation sources, schema evidence, regional visibility) read saved measurements only, so calling
+them never starts a new scan or uses the scan allowance:
 
-- `get_visibility`: AI Visibility and AI Readiness scores (0 to 100) with trend
+- `get_visibility`: AI Visibility and AI Readiness scores (each out of 100) with the previous week, the separate off-site Footprint score, and the subscores
 - `get_answers`: the answer each engine gave to each tracked buyer question, with the competitors it named and the web searches it ran first
 - `get_question_trajectories`: question-by-question history across the engines
 - `get_rivals` / `get_share_of_voice`: who AI names instead of you, and how often
 - `get_cited_queries`: the questions where a given competitor gets named
-- `get_mentions`: new pages on the web that mention the business
+- `get_mentions`: new pages on the web that mention the business, when a mention check has been run
 - `get_fix_plan`: the prioritised fix plan, in plain language
 - `get_citation_sources`: the sources the engines actually cite
 - `get_source_profile`: a profile of any cited source, including where a business gets listed on it
@@ -40,18 +51,41 @@ Nineteen read tools over live measurements, plus one action on paid monitors:
 - `get_benchmark`: the business against its category on our index
 - `get_personas`: the buyer personas behind the tracked questions
 - `get_context`: the full weekly pack in one call
-- `request_rescan`: a capped live re-measure (paid monitors only)
+- `request_rescan`: the one action, a fresh measurement capped by the plan's on-demand allowance (5 per rolling 7 days). On the demo it returns a worked example and queues nothing
+
+A customer's own token lists twenty-three tools: the twenty above plus three more saved-only reads.
+
+- `get_balance`: the site's existing on-demand scan allowance, queued status and cooldown
+- `get_weekly_brief`: the saved weekly brief
+- `get_grants`: the saved grants source check
 
 ## Customers
 
-Every monitored site gets its own endpoint at `https://areyoufoundbyai.com/mcp/<token>`,
-and agency fleets get one connector for the whole network. Setup guide, with a one-click Cursor
-link and the Claude Code command: [areyoufoundbyai.com/guides/connect-your-ai](https://areyoufoundbyai.com/guides/connect-your-ai)
+Every monitored site has its own token, on the Free plan as well as Pro. The recommended form is
+the static endpoint with the token in a header, because URLs end up in server logs, proxies and
+browser history and headers do not:
 
-The measurement method is open source: [techhorizonlabs/thl-open](https://github.com/techhorizonlabs/thl-open).
+```bash
+curl -X POST https://areyoufoundbyai.com/mcp \
+  -H "authorization: Bearer <your-token>" \
+  -H "content-type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+`x-api-key: <your-token>` works too, and the path form `https://areyoufoundbyai.com/mcp/<token>`
+keeps working for anything already pointed at it. Agency keys get a separate network catalogue
+over the sites they are allowed to see. Setup guide, with a one-click Cursor link and the Claude
+Code command: [areyoufoundbyai.com/guides/connect-your-ai](https://areyoufoundbyai.com/guides/connect-your-ai)
+
+The readiness method and the audit suite are open source at
+[techhorizonlabs/thl-open](https://github.com/techhorizonlabs/thl-open). The measurement engine
+itself is not.
 
 ## Registry manifest
 
-[`server.json`](./server.json) is the manifest for the official MCP registry.
+[`server.json`](./server.json) is the manifest for the official MCP registry. Its `version` is the
+version of this registry entry, not of the server software: the registry needs a new version
+number each time the entry's metadata changes, so the entry is at 1.1.1 while the hosted server
+reports 1.1.0 in its `serverInfo`. Both point at the same hosted server.
 
 Tech Horizon Labs, Noosa, Australia. hello@techhorizonlabs.com
