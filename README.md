@@ -3,7 +3,9 @@
 Hosted MCP server for [Are you found by AI?](https://areyoufoundbyai.com), the AI visibility
 tool built by Tech Horizon Labs. The product asks AI engines the questions a business's buyers
 actually type, records whether the business is named, who is named instead and which sources the
-engines read, and re-measures on a schedule (weekly on Pro, monthly on the free plan). This server gives the business owner's own AI live
+engines read, and re-measures on a schedule. On Pro the customer chooses how often (weekly, monthly
+or whenever they like), and each check spends tokens from one balance shared across every site on
+the account; the free plan re-checks monthly. This server gives the business owner's own AI live
 access to that measurement mid-conversation.
 
 ## Try it now, no account
@@ -51,13 +53,40 @@ them never starts a new scan or uses the scan allowance:
 - `get_benchmark`: the business against its category on our index
 - `get_personas`: the buyer personas behind the tracked questions
 - `get_context`: the full weekly pack in one call
-- `request_rescan`: the one action, a fresh measurement capped by the plan's on-demand allowance (5 per rolling 7 days). On the demo it returns a worked example and queues nothing
+- `request_rescan`: the one action, a fresh measurement capped by the plan's on-demand allowance (5 per rolling 7 days on a subscription that keeps its earlier terms). On a token account it queues nothing and asks for the token price to be confirmed in the workspace. On the demo it returns a worked example and queues nothing
 
-A customer's own token lists twenty-three tools: the twenty above plus three more saved-only reads.
+## On a customer's own token
 
-- `get_balance`: the site's existing on-demand scan allowance, queued status and cooldown
+A customer's own token lists more than the demo. The names and counts below come from the hosted
+service's source with its current release settings (token billing and the client workspace on);
+they have not been listed against a live customer token, so check your own `tools/list`.
+
+Three more saved-only reads (twenty-three with the twenty above):
+
+- `get_balance`: the site's existing on-demand scan allowance, queued status and cooldown. It does not show the token balance
 - `get_weekly_brief`: the saved weekly brief
 - `get_grants`: the saved grants source check
+
+Seven workspace reads (thirty in total):
+
+- `get_token_balance`: the account's shared token balance and expiry dates
+- `get_token_run`: the saved state and result of one token run
+- `list_reports`, `get_report`, `list_deleted_reports`, `list_report_versions`: saved client reports and their versions
+- `get_brief`: the saved client brief
+
+When the account owner turns on editing for the site's connection, nine workspace actions as well
+(thirty-nine in total). Each needs `confirmed: true`, recording that the person agreed:
+
+- `quote_token_run`: a ten-minute price quote for a run, without spending
+- `confirm_token_run`: after the person agrees to the quoted price, reserves the tokens and queues that run
+- `set_brief`, `save_report`, `update_report`, `delete_report`, `restore_report`, `restore_report_version`, `regenerate_report`: save and manage the client brief and reports
+
+There is no schedule tool. The customer chooses how often checks run in the signed-in workspace.
+
+Pricing is on [areyoufoundbyai.com/pricing](https://areyoufoundbyai.com/pricing): Pro is US$79 a
+month for 14,000 tokens, or US$869 a year, and a check of 25 buyer questions plus a fresh site read
+uses 3,150 tokens. Token packs (US$10 for 1,000 tokens, US$20 for 2,000, US$50 for 5,000) need no
+subscription.
 
 ## Customers
 
