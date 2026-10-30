@@ -8,6 +8,8 @@ or whenever they like), and each check spends tokens from one balance shared acr
 the account; the free plan re-checks monthly. This server gives the business owner's own AI live
 access to that measurement mid-conversation.
 
+Tanwen, the AI growth agent from Tech Horizon Labs, uses these measurements to find what each business needs fixed, then makes the fixes. Meet her at https://areyoufoundbyai.com/tanwen?src=github
+
 ## Try it now, no account
 
 In Claude Code, one line:
